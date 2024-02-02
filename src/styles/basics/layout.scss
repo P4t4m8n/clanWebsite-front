@@ -1,0 +1,27 @@
+.main-container {
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 20% 80%;
+    height: 100vh;
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .app-header {
+        grid-area: 1/1/2/-1;
+        width: 100%;
+        background-color: aqua;
+    }
+
+    .user {
+        grid-area: 2/1/-1/2;
+        background-color: burlywood;
+    }
+
+    .main-content {
+        grid-area: 2/2/-1/-1;
+        background-color: blueviolet;
+
+    }
+}

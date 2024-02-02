@@ -38,7 +38,6 @@ export function UnitDetails() {
             <header>{name}</header>
             <p>{description}</p>
             <Link to="edit" state={{ unitId: unit._id }} >Edit</Link>
-
         </section>
     )
 

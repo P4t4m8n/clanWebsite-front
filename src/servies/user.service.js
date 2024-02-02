@@ -1,4 +1,3 @@
-import { storageService } from './async-storage.service'
 import { httpService } from './http.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
@@ -14,7 +13,9 @@ export const userService = {
     getById,
     remove,
     update,
-    getEmptyCredentials
+    getEmptyCredentials,
+    getTimeSince,
+    daysSince
 
 }
 
@@ -36,16 +37,24 @@ function update(credentials) {
     return httpService.put(USER_URL + credentials._id, credentials)
 }
 
-function login(credentials) {
-    const user = httpService.post(AUTH_URL + 'login', credentials)
-    if (user) setLoggedinUser(user)
-    return user
+async function login(credentials) {
+    try {
+        const user = await httpService.post(AUTH_URL + 'login', credentials)
+        if (user)  setLoggedinUser(user)
+        return user
+
+
+    } catch (err) { throw err }
 }
 
-function signup(credentials) {
-    const user = httpService.post(AUTH_URL + 'signup', credentials)
-    if (user) setLoggedinUser(user)
-    return user
+async function signup(credentials) {
+    try {
+        const user = await httpService.post(AUTH_URL + 'signup', credentials)
+        if (user)  setLoggedinUser(user)
+        return user
+
+
+    } catch (err) { throw err }
 }
 
 async function logout() {
@@ -61,21 +70,58 @@ function setLoggedinUser(user) {
     return sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
 }
 
-function getEmptyCredentials(fullName = '', userName = '', password = '', rank = { type: 'recruit', imgUrl: '/src/styles/img/recruit.svg' }, madels = [], movement = [], history = [], msgs = [], units = []) {
+function getEmptyCredentials(fullname = '', username = '', password = '', email = '') {
     return {
-        fullName,
-        userName,
+        fullname,
+        username,
+        position: 'member',
         password,
-        rank,
-        madels,
-        movement,
-        history,
-        msgs,
-        units,
-        officerNots,
+        email,
+        imgUrl: '',
+        rank: { type: 'recruit', imgUrl: '/src/styles/img/recruit.svg', createdAt: Date.now() },
+        medals: [],
+        movement: [],
+        history: [],
+        msgs: [],
+        units: [],
+        officerNots: [],
         createdAt: Date.now()
     }
+}
 
+function getTimeSince(timeStamp) {
+    const dateThen = new Date(timeStamp)
+    const now = new Date()
+
+    let years = now.getFullYear() - dateThen.getFullYear()
+    let months = now.getMonth() - dateThen.getMonth()
+    let days = now.getDate() - dateThen.getDate()
+
+    if (months < 0) {
+        years -= 1
+        months += 12
+    }
+
+    if (days < 0) {
+        months -= 1
+        const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0)
+        days += previousMonth.getDate()
+    }
+
+    if (months < 0) {
+        years -= 1
+        months += 12
+    }
+
+    return `${years} years, ${months} months, ${days} days`
+}
+
+function daysSince(timestamp) {
+    const dateThen = new Date(timestamp)
+    const now = new Date()
+    const differenceInMilliseconds = now - dateThen
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24)
+    return Math.floor(differenceInDays)
 }
 
 

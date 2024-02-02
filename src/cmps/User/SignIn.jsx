@@ -10,6 +10,8 @@ export function SignIn() {
   const [isSignup, setIsSignUp] = useState(false)
   const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
 
+  const joinUnits = unitService.getAvailableJoinUnits()
+
   function isLogin(ev) {
     ev.preventDefault()
     isSignup ? onSignup(credentials) : onLogin(credentials)
@@ -18,7 +20,13 @@ export function SignIn() {
   function handleChange({ target }) {
     const field = target.name
     const value = target.value
-    setCredentials(prev => ({ ...prev, [field]: value }))
+
+    switch (field) {
+      case 'units':
+        return setCredentials(prev => ({ ...prev, [field]: [joinUnits[value]] }))
+      default:
+        return setCredentials(prev => ({ ...prev, [field]: value }))
+    }
   }
 
   async function onLogin(ev) {
@@ -35,8 +43,7 @@ export function SignIn() {
     catch (err) { console.log(err) }
   }
 
-  const { username, email, password } = credentials
-  const joinUnits = unitService.getAvailableJoinUnits()
+  const { username, email, password, fullname } = credentials
 
   return (
 
@@ -49,6 +56,7 @@ export function SignIn() {
         name='username'
         onChange={handleChange}
       />
+
       <input
         type="password"
         placeholder="Password"
@@ -65,9 +73,17 @@ export function SignIn() {
             value={email}
             onChange={handleChange}
           />
+          <input
+            type="text"
+            placeholder="Fullname"
+            value={fullname}
+            name='fullname'
+            onChange={handleChange}
+          />
           <select onChange={handleChange} name="units">
+            <option >pick a unit</option>
             {joinUnits.map((unit, idx) =>
-              <option key={idx} value={[unit]}>{unit.name}</option>
+              <option key={idx} value={idx}>{unit.name}</option>
             )}
           </select>
         </>

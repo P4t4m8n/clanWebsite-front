@@ -63,7 +63,10 @@ function getUnitTypes() {
 }
 
 function getAvailableJoinUnits() {
-    return [{ name: 'Overwatch', unitId: '65bbf4bf7f12f16367e5bbde' }]
+    return [
+        { name: 'Overwatch', unitId: '65bd1208f42924e035b147b9' },
+        { name: 'Test', unitId: '65bd1226f42924e035b147ba' }
+    ]
 }
 
 

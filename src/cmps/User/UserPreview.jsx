@@ -1,21 +1,59 @@
+import { EventCalendar } from "../../pages/EventCalendar"
+import { RecruitSvg } from "../../servies/icon.service"
+import { userService } from "../../servies/user.service"
 
 
-export function UserPreview({ currUser }) {
+export function UserPreview({ currUser, onLogout }) {
 
-    const { username, units, createdAt, rank, madels, msgs } = currUser
+    const {
+        username,
+        position,
+        imgUrl,
+        rank,
+        medals,
+        msgs,
+        units,
+        createdAt,
+    } = currUser
+        console.log("imgUrl:", imgUrl)
 
+    const timeInTaw = userService.daysSince(createdAt)
+    const timeInRank = userService.daysSince(rank.createdAt)
     return (
-        <section className="user-preview">
-            <div >
-                <h4>Member</h4>
-                <h3>P4t4m8n</h3>
-                <h4>Days in service: 666</h4>
+        <section className="user-panel flex">
+            <div className="user-info grid" >
+                <img src={imgUrl}></img>
+                <h2>{username}</h2>
+                <DynmicRankImgCmp type={rank.type}></DynmicRankImgCmp>
+                <h3>days in Rank: {timeInRank}</h3>
+                <h4>Days in service: {timeInTaw}</h4>
             </div>
-            <div>
-                <h5>Patamon division</h5>
-                <h5>sergent</h5>
-                <p>999+ massages</p>
+            <div className="user-unit-info grid">
+                <h4>{units[0].name}</h4>
+                <h5>{position}</h5>
+                {medals.length &&
+                    <ul className="medals">
+                        {medals.map((medal, idx) =>
+                            <li key={idx}>
+                                <img src={medal.imgUrl}></img>
+                            </li>
+                        )}
+                    </ul>
+                }
+                <p>{msgs.length}</p>
             </div>
+            <EventCalendar></EventCalendar>
+            <button onClick={onLogout}>logout</button>
         </section>
     )
+}
+
+function DynmicRankImgCmp({ type }) {
+
+    switch (type) {
+        case 'recruit':
+            return <RecruitSvg></RecruitSvg>
+        default:
+            break;
+    }
 }

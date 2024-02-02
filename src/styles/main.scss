@@ -1,8 +1,15 @@
 
 
-//Setup
-@import "./basics/base";
-@import "./basics/helpers";
+//Base
+@import "./basics/base.scss";
+@import "./basics/helpers.scss";
+@import "./basics/layout.scss";
+
+//setup
+@import "./setup/variables.scss";
 
 //Pages
 @import "./pages/Home.scss";
+
+//Cmps
+@import "./cmps/UserPanel.scss";

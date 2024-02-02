@@ -6,8 +6,7 @@ import { SignIn } from "./SignIn";
 import { UserPreview } from "./UserPreview";
 
 
-export function userManager() {
-
+export function UserManager() {
 
     const currUser = useSelector(storeState => storeState.userMoudle.user)
 
@@ -23,9 +22,10 @@ export function userManager() {
     }
     return (
 
-        <section className="user">
+        <>
             {!currUser && <SignIn></SignIn>}
-            {currUser && <UserPreview currUser={currUser}></UserPreview>}
-        </section>
+            {currUser && <UserPreview currUser={currUser} onLogout={onLogout}></UserPreview>}
+        </>
+
     )
 }

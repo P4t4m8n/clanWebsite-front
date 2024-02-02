@@ -1,32 +1,35 @@
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom'
-import { AppHeader } from "./cmps/AppHeader";
-import { UnitIndex } from "./pages/UnitIndex";
-import { UnitDetails } from "./cmps/UnitDetails";
-import { UnitEdit } from "./pages/UnitEdit";
-import { Home } from "./pages/Home";
-import { EventCalendar } from './pages/EventCalendar';
-
+import { AppHeader } from "./cmps/AppHeader"
+import { UnitIndex } from "./pages/UnitIndex"
+import { UnitDetails } from "./cmps/UnitDetails"
+import { UnitEdit } from "./pages/UnitEdit"
+import { Home } from "./pages/Home"
+import { EventCalendar } from './pages/EventCalendar'
+import { UserManager } from './cmps/User/UserMangar'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
+import '../src/styles/main.scss'
 
 export function App() {
 
-
     return (
-        <>
+        <Provider store={store}>
             <Router>
-                <section className="main-container">
+                <section className="main-container grid">
                     <AppHeader />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/units" element={<UnitIndex />} />
-                        <Route path="/units/:unitId" element={<UnitDetails />} />
-                        <Route path="/units/edit" element={<UnitEdit />} />
-                        <Route path="/units/:unitId/edit" element={<UnitEdit />} />
-                        <Route path="/calender" element={<EventCalendar />}/>
-                </Routes>
+                    <UserManager></UserManager>
+                    <main className='main-content grid'>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/units" element={<UnitIndex />} />
+                            <Route path="/units/:unitId" element={<UnitDetails />} />
+                            <Route path="/units/edit" element={<UnitEdit />} />
+                            <Route path="/units/:unitId/edit" element={<UnitEdit />} />
+                            <Route path="/calender" element={<EventCalendar />} />
+                        </Routes>
+                    </main>
                 </section>
             </Router>
-        </>
+        </Provider>
     )
-
-
 }
