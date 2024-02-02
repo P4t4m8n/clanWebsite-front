@@ -1,0 +1,32 @@
+.home {
+
+    .hero {
+        // background: url('/path-to-your-hero-image.jpg') no-repeat center center;
+        background-size: cover;
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+    }
+
+    .about,
+    .featuredGames,
+    .upcomingEvents {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .gameList {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .game,
+    .event {
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        width: 300px;
+    }
+
+}
