@@ -13,3 +13,9 @@
 
 //Cmps
 @import "./cmps/UserPanel.scss";
+@import "./cmps/EventEditModal.scss";
+
+//Lib
+// @import 'react-big-calendar/lib/sass/styles';
+// @import 'react-big-calendar/lib/addons/dragAndDrop/styles';
+@import "../../node_modules/react-big-calendar/lib/css/react-big-calendar.css"

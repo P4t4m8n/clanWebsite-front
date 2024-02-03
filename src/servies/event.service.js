@@ -6,9 +6,10 @@ export const eventService = {
     query,
     getById,
     remove,
-    update,
+    save,
     getEmptyEvent,
-    getDefaultFilter
+    getDefaultFilter,
+    getDateFromObj
 }
 
 window.eventService = eventService
@@ -25,19 +26,21 @@ function remove(eventId) {
     return httpService.delete(EVENT_URL + eventId)
 }
 
-function update(event) {
-    return httpService.put(EVENT_URL + event._id, event)
+function save(event) {
+    const edit = 'edit/'
+    if (event._id) return httpService.put(EVENT_URL + edit + event._id, event)
+    return httpService.post(EVENT_URL + edit, event)
 }
 
-function getEmptyEvent(unit = { name: '', unitId: '' }, CreateBy = { name: '', userId: '' }, name = '', description = ',') {
+function getEmptyEvent() {
     return {
-        unit,
-        name,
-        description,
-        startDate: '',
-        endDate: '',
+        unit: { name: '', _id: '' },
+        name: '',
+        description: '',
+        start: { date: '', time: '' },
+        end: { date: '', time: '' },
         inviteList: [],
-        CreateBy,
+        createBy: { name: '', _id: '' },
         isMandtory: false,
         createAt: Date.now()
     }
@@ -51,6 +54,17 @@ function getDefaultFilter() {
         isMandtory: false
     }
 }
+
+function getDateFromObj(dateObj) {
+    const year = dateObj.getFullYear()
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+    const day = dateObj.getDate().toString().padStart(2, '0')
+    const hours = dateObj.getHours().toString().padStart(2, '0')
+    const minutes = dateObj.getMinutes().toString().padStart(2, '0')
+
+    return { date: `${year}-${month}-${day}`, time: `${hours}:${minutes}` }
+}
+
 
 
 

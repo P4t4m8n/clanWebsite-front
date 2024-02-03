@@ -64,8 +64,8 @@ function getUnitTypes() {
 
 function getAvailableJoinUnits() {
     return [
-        { name: 'Overwatch', unitId: '65bd1208f42924e035b147b9' },
-        { name: 'Test', unitId: '65bd1226f42924e035b147ba' }
+        { name: 'Overwatch', unitId: '65bd1208f42924e035b147b9', imgUrl: 'http://res.cloudinary.com/dpnevk8db/image/upload/v1706897812/pu0c8tlcwsxvd8ryt9bv.png' },
+        { name: 'Test', unitId: '65bd1226f42924e035b147ba', imgUrl: 'http://res.cloudinary.com/dpnevk8db/image/upload/v1706897839/jpcrxa1aaobvqzzejoyl.png' }
     ]
 }
 

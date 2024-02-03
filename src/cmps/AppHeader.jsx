@@ -8,7 +8,6 @@ export function AppHeader() {
                 <NavLink to="/about">About</NavLink>
                 <NavLink to="/events">Events</NavLink>
                 <NavLink to="/units">Units</NavLink>
-                <NavLink to="/calender">Calender</NavLink>
             </nav>
         </section>
     )

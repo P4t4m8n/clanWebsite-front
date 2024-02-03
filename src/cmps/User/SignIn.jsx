@@ -62,6 +62,7 @@ export function SignIn() {
         placeholder="Password"
         name='password'
         value={password}
+        autoComplete='on'
         onChange={handleChange}
       />
       {isSignup &&
