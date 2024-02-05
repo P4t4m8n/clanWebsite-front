@@ -6,16 +6,23 @@ import { Link, useNavigate } from "react-router-dom"
 
 export function UnitIndex() {
 
-    const [units, setUnits] = useState([])
+    const [divisions, setDivisions] = useState([])
+    const [corps, setCoprs] = useState([])
+
     const navigate = useNavigate()
+
     useEffect(() => {
         loadUnits()
     }, [])
 
     const loadUnits = async () => {
         try {
-            const dbUnits = await unitService.query()
-            setUnits(dbUnits)
+            const tempCorps = await unitService.query({ level: 'Corps' })
+            console.log("tempCorps:", tempCorps)
+            const tempDivision = await unitService.query({ level: 'Division' })
+            console.log("tempDivision:", tempDivision)
+            setDivisions(tempDivision)
+            setCoprs(tempCorps)
         } catch (err) { console.log(err) }
     }
 
@@ -30,7 +37,8 @@ export function UnitIndex() {
     return (
         <>
             <button onClick={onAddUnit}>Add</button>
-            <UnitList units={units}></UnitList>
+            <UnitList units={corps}></UnitList>
+            <UnitList units={divisions}></UnitList>
         </>
     )
 }

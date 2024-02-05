@@ -16,7 +16,7 @@ export const unitService = {
 
 window.cs = unitService
 
-function query(filterBy = {}) {
+function query(filterBy = {  }) {
     return httpService.get(BASE_URL, filterBy)
 
 }
