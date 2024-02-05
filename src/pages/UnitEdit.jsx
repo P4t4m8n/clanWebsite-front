@@ -4,10 +4,13 @@ import { unitService } from "../servies/unit.service"
 import { useLocation, useNavigate, useParams } from "react-router"
 import { uploadService } from "../servies/upload.service"
 import { UnitEditHero } from "../cmps/UnitEdit/UnitEditHero"
+import { useForm } from "../customHooks/useForm"
 
 export function UnitEdit({ unitId }) {
 
-    const [unitToEdit, setUnitToEdit] = useState(unitService.getEmptyUnit())
+    const [fields, setFields, handleChange, activeUnits] = useForm(unitService.getEmptyUnit())
+    console.log("fields:", fields)
+
     const [activeSubUnits, setActiveSubUnits] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
@@ -21,53 +24,52 @@ export function UnitEdit({ unitId }) {
     }, [unitId])
 
     useEffect(() => {
-        if (unitToEdit && unitToEdit.subUnits && unitToEdit.subUnits.length)
+        if (fields && fields.subUnits && fields.subUnits.length)
             onLoadSubUnits()
-    }, [unitToEdit.subUnits])
+    }, [fields.subUnits])
 
     const loadUnit = async (unitId) => {
         try {
             const unit = await unitService.getById(unitId)
-            setUnitToEdit(unit)
+            setFields(unit)
         } catch (err) { console.log(err) }
     }
 
     const onLoadSubUnits = async () => {
-        const subUnitPromises = unitToEdit.subUnits.map(unitId => unitService.getById(unitId))
-
+        const subUnitPromises = fields.subUnits.map(unitId => unitService.getById(unitId))
         try {
-            const results = await Promise.allSettled(subUnitPromises)
-            let successfulSubUnits = []
-            let failedIndices = []
+            const results = await Promise.all(subUnitPromises)
+            // let successfulSubUnits = []
+            // let failedIndices = []
 
-            results.forEach((result, index) => {
-                if (result.status === 'fulfilled') {
-                    successfulSubUnits.push(result.value)
-                } else {
-                    console.error(`Failed to load subUnit with id ${unitToEdit.subUnits[index]}`, result.reason)
-                    failedIndices.push(index)
-                }
-            })
+            // results.forEach((result, index) => {
+            //     if (result.status === 'fulfilled') {
+            //         successfulSubUnits.push(result.value)
+            //     } else {
+            //         console.error(`Failed to load subUnit with id ${fields.subUnits[index]}`, result.reason)
+            //         failedIndices.push(index)
+            //     }
+            // })
+            // const updatedSubUnits = fields.subUnits.filter((_, index) => !failedIndices.includes(index))
 
-            const updatedSubUnits = unitToEdit.subUnits.filter((_, index) => !failedIndices.includes(index))
+            // setFields(prevUnit => {
+            //     const newUnit = onSaveUnit(null, { ...prevUnit, subUnits: updatedSubUnits })
+            //     return newUnit
+            // })
 
-            setUnitToEdit(prevUnit => {
-                const newUnit = onSaveUnit(null, { ...prevUnit, subUnits: updatedSubUnits })
-                return newUnit
-            })
-
-            setActiveSubUnits(successfulSubUnits)
+            setActiveSubUnits(results)
         } catch (err) {
             console.error("An unexpected error occurred:", err)
         }
     }
 
-    const onSaveUnit = async (ev, unitToSave = unitToEdit) => {
+    const onSaveUnit = async (ev, unitToSave = fields) => {
         console.log("unitToSave:", unitToSave)
         if (ev) ev.preventDefault()
         try {
             console.log("unitToEdit:", unitToSave)
             const unit = await unitService.save(unitToSave)
+            setFields(unit)
         } catch (err) { console.log(err) }
     }
 
@@ -75,36 +77,28 @@ export function UnitEdit({ unitId }) {
         ev.preventDefault()
 
         try {
-            await unitService.remove(unitToEdit._id)
+            await unitService.remove(fields._id)
             navigate('/units')
         } catch (err) { console.log(err) }
     }
 
-    const onAddSubUnit = async (ev) => {
-
-        ev.preventDefault()
-        const newSubUnit = unitService.getEmptyUnit()
-        newSubUnit.parent = unitToEdit._id
+    const onAddSubUnit = useCallback(async (ev) => {
+        ev.preventDefault();
         try {
-            const saveSubUnit = await unitService.save(newSubUnit)
-            setUnitToEdit(prevUnit => {
-                const units = [...prevUnit.subUnits, saveSubUnit._id]
-                const newUnit = { ...prevUnit, subUnits: units }
-                onSaveUnit(ev, newUnit)
-                return { ...prevUnit, subUnits: units }
-            })
+           if(!fields._id) alert('save parent')
+          
+            const newSubUnit = unitService.getEmptyUnit();
+            newSubUnit.parent = fields._id;
+    
+            const savedSubUnit = await unitService.save(newSubUnit);
+    
+            const updatedSubUnits = [...fields.subUnits, savedSubUnit._id];
+            await onSaveUnit(null, { ...fields, subUnits: updatedSubUnits });
         } catch (err) { console.log(err) }
-    }
+    }, [fields]);
 
     const onBack = () => {
         navigate('/units')
-    }
-
-    const handleChange = ({ target }) => {
-        let value = target.value
-        let field = target.name
-
-        setUnitToEdit(prevUnit => ({ ...prevUnit, [field]: value }))
     }
 
     const onUploadImg = useCallback(async (ev) => {
@@ -113,8 +107,8 @@ export function UnitEdit({ unitId }) {
         try {
             const imgUrlRes = await uploadService.uploadImg(file)
             const imgUrl = imgUrlRes
-            setUnitToEdit(  prevUnit => {
-                const test =  prevUnit
+            setFields(prevUnit => {
+                const test = prevUnit
                 return { ...prevUnit, imgUrl }
             })
         } catch (err) {
@@ -122,8 +116,8 @@ export function UnitEdit({ unitId }) {
         }
     }, [])
 
-    if (!unitToEdit) return <div>...Loading</div>
-    const { name, subUnits, style, description, type, imgUrl, level } = unitToEdit
+    if (!fields) return <div>...Loading</div>
+    const { name, subUnits, style, description, type, imgUrl, level } = fields
     const unitsToAdd = unitService.getSubUnits()
     const adminUnits = unitService.getAdminstrativeUnits()
     const unitTypes = unitService.getUnitTypes()
@@ -132,7 +126,7 @@ export function UnitEdit({ unitId }) {
         <section className="unit-edit">
             <form onSubmit={(ev) => onSaveUnit(ev)}>
                 <label htmlFor="file-input">
-                    <input type="file" id="file-input" name="image" onChange={onUploadImg}   />
+                    <input type="file" id="file-input" name="image" onChange={onUploadImg} />
                     <img src={imgUrl} alt="unit-img"></img>
 
                 </label>
@@ -154,7 +148,7 @@ export function UnitEdit({ unitId }) {
                 </select>
                 <button>Save</button>
             </form>
-            {unitToEdit._id ?
+            {fields._id ?
                 <button onClick={onRemoveUnit}>Remove</button>
                 :
                 <button onClick={onBack}>Cancel</button>

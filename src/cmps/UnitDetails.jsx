@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 
 export function UnitDetails() {
     const [unit, setUnit] = useState(null)
+    const [isOpen, setIsopen] = useState(false)
     const params = useParams()
+
+    const open = (ev) => { setIsopen(true) }
+    const close = (ev) => { setIsopen(false) }
 
     useEffect(() => {
         loadUnit(params.unitId)

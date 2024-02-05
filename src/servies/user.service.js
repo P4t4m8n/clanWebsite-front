@@ -9,7 +9,7 @@ export const userService = {
     logout,
     signup,
     getLoggedinUser,
-    getUsers,
+    query,
     getById,
     remove,
     update,
@@ -21,12 +21,16 @@ export const userService = {
 
 window.userService = userService
 
-function getUsers() {
+function query() {
     return httpService.get(USER_URL)
 }
 
 function getById(userId) {
     return httpService.get(USER_URL + userId)
+}
+
+function getByName(userName) {
+
 }
 
 function remove(userId) {
@@ -40,7 +44,7 @@ function update(credentials) {
 async function login(credentials) {
     try {
         const user = await httpService.post(AUTH_URL + 'login', credentials)
-        if (user)  setLoggedinUser(user)
+        if (user) setLoggedinUser(user)
         return user
 
 
@@ -50,7 +54,7 @@ async function login(credentials) {
 async function signup(credentials) {
     try {
         const user = await httpService.post(AUTH_URL + 'signup', credentials)
-        if (user)  setLoggedinUser(user)
+        if (user) setLoggedinUser(user)
         return user
 
 
@@ -123,6 +127,8 @@ function daysSince(timestamp) {
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24)
     return Math.floor(differenceInDays)
 }
+
+
 
 
 

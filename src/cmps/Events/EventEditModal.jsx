@@ -1,96 +1,61 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 import { eventService } from "../../servies/event.service"
-import { unitService } from "../../servies/unit.service"
 import { userService } from "../../servies/user.service"
+import { useForm } from "../../customHooks/useForm"
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+export function EventEditModal({ setIsOpen, event, onSaveEvent, onRemoveEvent }) {
+console.log("event:", event)
 
-export function EventEditModal({ setIsOpen, data, onSaveEvent, onRemoveEvent }) {
+    const [fields, setFields, handleChange, activeUnits] = useForm(event)
 
-    const [eventToEdit, setEventToEdit] = useState(eventService.getEmptyEvent())
-    const activeUnits = unitService.getAvailableJoinUnits()
-    const user = userService.getLoggedinUser()
-    console.log("user:", user)
-
-    useEffect(() => {
-        setEvent(data)
-
-    }, [data])
-
-    const setEvent = (data) => {
-        const dateStartObj = new Date(data.start)
-        const dateEndObj = new Date(data.end)
-        const start = eventService.getDateFromObj(dateStartObj)
-        const end = eventService.getDateFromObj(dateEndObj)
-        const createBy = { name: user.username, _id: user._id }
-        setEventToEdit(prevEvent => ({ ...prevEvent, start, end, createBy }))
-    }
-    const handleChange = ({ target }) => {
-
-        let value = target.value
-        let field = target.name
-
-        switch (target.type) {
-            case "time":
-                if (field === 'startTime') {
-                    const start = { ...eventToEdit.start, time: value }
-                    return setEventToEdit(prevEvent => ({ ...prevEvent, start }))
-                }
-                else {
-                    const end = { ...eventToEdit.end, time: value }
-                    return setEventToEdit(prevEvent => ({ ...prevEvent, end }))
-                }
-
-            case "date":
-                if (field === 'startDate') {
-                    const start = { ...eventToEdit.start, date: value }
-                    return setEventToEdit(prevEvent => ({ ...prevEvent, start }))
-                }
-                else {
-
-                    const end = { ...eventToEdit.end, date: value }
-                    return setEventToEdit(prevEvent => ({ ...prevEvent, end }))
-                }
-
-            case "select-one":
-                return setEventToEdit(prevEvent => ({ ...prevEvent, unit: activeUnits[value] }))
-
-            default:
-                return setEventToEdit(prevEvent => ({ ...prevEvent, [field]: value }))
-        }
+    const handleDates = ({ $d }, name) => {
+        console.log("$d:", $d)
+        console.log("$d:", dayjs($d))
+        setFields((prevEvent) => ({ ...prevEvent, [name]: dayjs($d) }))
     }
 
-
+    console.log("fields:", fields)
+    if (!fields) return
     const {
         unit,
-        name,
+        title,
         description,
         start,
         end,
         inviteList,
-        isMandtory,
-    } = eventToEdit
+        isMandatory,
+        _id
+    } = fields
 
-    if (!eventToEdit) return
     return (
         <div className="modal-backdrop">
             <div className="modal-content">
                 <form>
-                    <input type="text" name="name" value={name} onChange={handleChange} />
-                    <input type="time" name="startTime" value={start.time} onChange={handleChange} />
-                    <input type="date" name="startDate" value={start.date} onChange={handleChange} />
-                    <input type="time" name="endTime" value={end.time} onChange={handleChange} />
-                    <input type="date" name="endDate" value={end.date} onChange={handleChange} />
+                    <input type="text" name="title" value={title} onChange={handleChange} />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker value={start} onChange={(ev) => handleDates(ev, "start")} />
+                        <DateTimePicker value={end} onChange={(ev) => handleDates(ev, "end")} />
+                    </LocalizationProvider>
+
                     <textarea name="description" rows="4" cols="50" value={description} placeholder="description" onChange={handleChange} />
+
                     <select name="unit" onChange={handleChange} >
-                        <option  value="">--Please choose an unit--</option>
+                        <option value="">--Please choose an unit--</option>
                         {activeUnits.map((unit, idx) =>
                             <option key={idx} value={idx}>{unit.name}</option>)}
+
                     </select>
-                    {/* <input type="checkbox" name="isMandtory"  >Mandtory?</input> */}
+                    <label htmlFor="isMandatory">Mandatory?</label>
+                    <input type="checkbox" name="isMandatory" checked={isMandatory} onChange={handleChange}></input>
+
                 </form>
                 <button onClick={() => setIsOpen(false)}>Close</button>
-                <button onClick={() => onSaveEvent(eventToEdit)}>Save</button>
-                { }
+                <button onClick={() => onSaveEvent(fields)}>Save</button>
+                {_id && <button onClick={() => onRemoveEvent(_id)}>Delete</button>}
             </div>
         </div>
     )

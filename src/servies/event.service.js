@@ -9,7 +9,7 @@ export const eventService = {
     save,
     getEmptyEvent,
     getDefaultFilter,
-    getDateFromObj
+    getDateFromObj,
 }
 
 window.eventService = eventService
@@ -35,13 +35,13 @@ function save(event) {
 function getEmptyEvent() {
     return {
         unit: { name: '', _id: '' },
-        name: '',
+        title: '',
         description: '',
-        start: { date: '', time: '' },
-        end: { date: '', time: '' },
+        start: '',
+        end: '',
         inviteList: [],
-        createBy: { name: '', _id: '' },
-        isMandtory: false,
+        createBy: [],
+        isMandatory: false,
         createAt: Date.now()
     }
 
@@ -56,14 +56,17 @@ function getDefaultFilter() {
 }
 
 function getDateFromObj(dateObj) {
-    const year = dateObj.getFullYear()
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
-    const day = dateObj.getDate().toString().padStart(2, '0')
-    const hours = dateObj.getHours().toString().padStart(2, '0')
-    const minutes = dateObj.getMinutes().toString().padStart(2, '0')
+    const date = new Date(dateObj)
+
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
 
     return { date: `${year}-${month}-${day}`, time: `${hours}:${minutes}` }
 }
+
 
 
 
