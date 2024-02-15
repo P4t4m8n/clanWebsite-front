@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
-import { MandatorySvg, OptionalSvg } from '../servies/icon.service'
-import { eventService } from '../servies/event.service'
+import { MandatorySvg, OptionalSvg } from '../service/icon.service'
+import { eventService } from '../service/event.service'
 import { EventEditModal } from '../cmps/Events/EventEditModal'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayjs from 'dayjs';
-import { userService } from '../servies/user.service'
+import { userService } from '../service/user.service'
 
 
 export function EventCalender() {

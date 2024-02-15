@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import { eventService } from "../../servies/event.service"
-import { userService } from "../../servies/user.service"
+import { eventService } from "../../service/event.service"
+import { userService } from "../../service/user.service"
 import { useForm } from "../../customHooks/useForm"
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';

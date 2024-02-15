@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { unitService } from "../servies/unit.service"
+import { unitService } from "../service/unit.service"
 
 export const useForm = (initialState) => {
     const [fields, setFields] = useState(initialState)
@@ -7,9 +7,6 @@ export const useForm = (initialState) => {
 
     function handleChange({ target }) {
         let { value, name, type, checked } = target
-        console.log("type:", type)
-        console.log("name:", name)
-        console.log("value:", value)
 
         switch (type) {
             case 'number':
@@ -23,6 +20,10 @@ export const useForm = (initialState) => {
 
             case 'select-one':
                 if (name === 'units') value = activeUnits[value]
+                break
+
+            case 'select-multiple':
+                value = Array.from(target.selectedOptions, (option) => option.value)
                 break
 
             default:

@@ -9,6 +9,9 @@ import { Provider } from 'react-redux'
 import { store } from './store/store'
 import '../src/styles/main.scss'
 import { EventCalender } from './pages/EventCalender'
+import { DiscordManager } from './pages/DiscordManager'
+import { RoleEdit } from './cmps/Discrod/Role/RoleEdit'
+import { RoleDetails } from './cmps/Discrod/Role/RoleDetails'
 
 export function App() {
 
@@ -26,6 +29,10 @@ export function App() {
                             <Route path="/units/edit" element={<UnitEdit />} />
                             <Route path="/units/:unitId/edit" element={<UnitEdit />} />
                             <Route path="/events" element={<EventCalender />} />
+                            <Route path="/discord" element={<DiscordManager />} >
+                                <Route path="/discord/role/edit/:roleId?" element={<RoleEdit />} />
+                                <Route path="/discord/role/:roleId" element={<RoleDetails />} />
+                            </Route>
                         </Routes>
                     </main>
                 </section>

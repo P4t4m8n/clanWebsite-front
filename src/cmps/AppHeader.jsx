@@ -7,6 +7,7 @@ export function AppHeader() {
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/about">About</NavLink>
                 <NavLink to="/events">Events</NavLink>
+                <NavLink to="discord">Discord Manager</NavLink>
                 <NavLink to="/units">Units</NavLink>
             </nav>
         </section>

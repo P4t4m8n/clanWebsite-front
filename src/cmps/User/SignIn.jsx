@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import { login, signup } from '../../store/actions/user.actions'
 import { Link } from 'react-router-dom'
-import { userService } from '../../servies/user.service'
-import { unitService } from '../../servies/unit.service'
+import { userService } from '../../service/user.service'
+import { unitService } from '../../service/unit.service'
 
 export function SignIn() {
 

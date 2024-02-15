@@ -1,7 +1,7 @@
 import { EventCalender } from "../../pages/EventCalender"
-import { RecruitSvg } from "../../servies/icon.service"
-import { unitService } from "../../servies/unit.service"
-import { userService } from "../../servies/user.service"
+import { RecruitSvg } from "../../service/icon.service"
+import { unitService } from "../../service/unit.service"
+import { userService } from "../../service/user.service"
 
 
 export function UserPreview({ currUser, onLogout }) {

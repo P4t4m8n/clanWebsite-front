@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { unitService } from "../servies/unit.service";
+import { unitService } from "../service/unit.service";
 import { Link } from "react-router-dom";
 
 

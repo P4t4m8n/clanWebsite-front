@@ -1,4 +1,4 @@
-import { userService } from "../../servies/user.service"
+import { userService } from "../../service/user.service"
 
 export const SET_USER = 'SET_USER'
 export const DELETE_USER = 'DELETE_USER'
