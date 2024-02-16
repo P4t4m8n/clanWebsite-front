@@ -6,7 +6,7 @@ export function UnitList({ units }) {
     return (
         <ul>
             {units.map(unit =>
-                <Link to={unit._id} key={unit._id}>
+                <Link to={unit._id} key={unit._id} state={{ unitId: unit._id }} >
                     <UnitPreview unit={unit}></UnitPreview>
                 </Link>)}
         </ul>

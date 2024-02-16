@@ -44,6 +44,7 @@ function update(credentials) {
 async function login(credentials) {
     try {
         const user = await httpService.post(AUTH_URL + 'login', credentials)
+        console.log("user:", user)
         if (user) setLoggedinUser(user)
         return user
 
