@@ -1,5 +1,3 @@
-
-
 //Base
 @import "./basics/base.scss";
 @import "./basics/helpers.scss";
@@ -10,13 +8,14 @@
 
 //Pages
 @import "./pages/Home.scss";
-@import './pages/UnitIndex.scss';
+@import "./pages/UnitIndex.scss";
+@import"./pages/Calender.scss";
+@import "./pages/Admin.scss";
 
 //Cmps
 @import "./cmps/UserPanel.scss";
 @import "./cmps/EventEditModal.scss";
+@import "./cmps/AppHeader.scss";
 
 //Lib
-// @import 'react-big-calendar/lib/sass/styles';
-// @import 'react-big-calendar/lib/addons/dragAndDrop/styles';
 @import "../../node_modules/react-big-calendar/lib/css/react-big-calendar.css"

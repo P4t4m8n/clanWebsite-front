@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { logout } from "../../store/actions/user.actions";
 import { SignIn } from "./SignIn";
 import { UserPreview } from "./UserPreview";
@@ -9,6 +8,7 @@ import { UserPreview } from "./UserPreview";
 export function UserManager() {
 
     const currUser = useSelector(storeState => storeState.userMoudle.user)
+    const navigate = useNavigate()
 
     async function onLogout(ev) {
         ev.preventDefault()

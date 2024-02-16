@@ -1,14 +1,10 @@
-import { createContext, useEffect, useState } from "react";
-import { roleService } from "../service/discord.role.service";
+import {  useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { RoleList } from "../cmps/Discrod/Role/RoleList";
+import { roleService } from "../../../../service/discord.role.service";
+import { RoleList } from "./RoleList";
 
-
-
-export function DiscordManager() {
-
+export function RoleIndex() {
     const [roles, setRoles] = useState(null)
-    const RolesContext = createContext(null)
 
     useEffect(() => {
         loadRoles()
@@ -35,12 +31,10 @@ export function DiscordManager() {
     if (!roles) return <div>...Loading Roles</div>
 
     return (
-        <RolesContext.Provider value={roles}>
-            <section className="discord-manager">
-                <Link to={"role/edit"}>Add role</Link>
-                <RoleList roles={roles} onRemoveRole={onRemoveRole} />
-                <Outlet />
-            </section>
-        </RolesContext.Provider>
+        <section className="discord-manager">
+            <Link to={"role/edit"}>Add role</Link>
+            <RoleList roles={roles} onRemoveRole={onRemoveRole} />
+            <Outlet />
+        </section>
     )
 }

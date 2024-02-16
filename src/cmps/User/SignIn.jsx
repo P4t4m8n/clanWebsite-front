@@ -90,12 +90,9 @@ export function SignIn() {
         </>
       }
       <button type="submit">{(isSignup) ? ' Signup' : 'Sign in'}</button>
-      <Link href="#" onClick={() => setIsSignUp(!isSignup)} >
-        {isSignup ?
-          'Already a member? Login' :
-          "Don't have an account? Sign Up"
-        }
-      </Link>
+      <button onClick={() => setIsSignUp(!isSignup)} >
+        "Don't have an account? Apply Now!"
+      </button>
     </form>
 
 

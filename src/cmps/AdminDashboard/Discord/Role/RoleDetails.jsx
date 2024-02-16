@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { roleService } from "../../../service/discord.role.service";
+import { roleService } from "../../../../service/discord.role.service";
 
 
 export function RoleDetails() {

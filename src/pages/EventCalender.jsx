@@ -81,7 +81,7 @@ export function EventCalender() {
                     onRemoveEvent={onRemoveEvent}
                     setIsOpen={setIsOpen} />
             }
-            <div className='demo-app-main'>
+            <div className='calender'>
                 <FullCalendar
                     plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                     headerToolbar={{

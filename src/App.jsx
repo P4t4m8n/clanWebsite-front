@@ -7,11 +7,14 @@ import { Home } from "./pages/Home"
 import { UserManager } from './cmps/User/UserMangar'
 import { Provider } from 'react-redux'
 import { store } from './store/store'
-import '../src/styles/main.scss'
 import { EventCalender } from './pages/EventCalender'
-import { DiscordManager } from './pages/DiscordManager'
-import { RoleEdit } from './cmps/Discrod/Role/RoleEdit'
-import { RoleDetails } from './cmps/Discrod/Role/RoleDetails'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { RoleEdit } from './cmps/AdminDashboard/Discord/Role/RoleEdit'
+import { RoleDetails } from './cmps/AdminDashboard/Discord/Role/RoleDetails'
+import '../src/styles/main.scss'
+import { About } from './pages/About'
+import { UserEdit } from './cmps/AdminDashboard/User/UserEdit'
+import { UserDetails } from './cmps/User/userDetails'
 
 export function App() {
 
@@ -24,14 +27,17 @@ export function App() {
                     <main className='main-content grid'>
                         <Routes>
                             <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
                             <Route path="/units" element={<UnitIndex />} />
                             <Route path="/units/:unitId" element={<UnitDetails />} />
                             <Route path="/units/edit" element={<UnitEdit />} />
                             <Route path="/units/:unitId/edit" element={<UnitEdit />} />
                             <Route path="/events" element={<EventCalender />} />
-                            <Route path="/discord" element={<DiscordManager />} >
-                                <Route path="/discord/role/edit/:roleId?" element={<RoleEdit />} />
-                                <Route path="/discord/role/:roleId" element={<RoleDetails />} />
+                            <Route path="/admin/user/:userId" element={<UserDetails />} />
+                            <Route path="/admin" element={<AdminDashboard />} >
+                                <Route path="/admin/role/edit/:roleId?" element={<RoleEdit />} />
+                                <Route path="/admin/role/:roleId" element={<RoleDetails />} />
+                                <Route path="/admin/user/edit/:userId?" element={<UserEdit />} />
                             </Route>
                         </Routes>
                     </main>

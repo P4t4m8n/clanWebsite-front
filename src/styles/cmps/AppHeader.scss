@@ -1,0 +1,32 @@
+.app-header {
+    grid-area: 1/1/2/-1;
+    width: 100%;
+    background-color: $digital-grey;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+        width: 3rem;
+        height: 3rem;
+        background-color: transparent;
+        object-fit: scale-down;
+
+    }
+
+    nav {
+        opacity: .9;
+        gap: 1rem;
+
+        a {
+            color: $charcoal;
+
+            &:hover {
+                color: $cyber-yellow ;
+                opacity: 1
+            }
+        }
+    }
+
+
+}
+
